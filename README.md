@@ -14,6 +14,7 @@ I wanted to go beyond textbook theory and build something that actually works. T
 - Place orders using UPI, Credit Card, Wallet, or Cash on Delivery
 - Get email and SMS notifications when order status changes
 - Admin can add new products and update order statuses
+- Data persists across sessions using MySQL database
 
 ## Design Patterns I implemented
 
@@ -25,7 +26,8 @@ I wanted to go beyond textbook theory and build something that actually works. T
 
 **Factory** — used for creating Users and Products. Auto-generates unique IDs using UUID and centralizes object creation.
 
-**Singleton** — used for AppContext which acts as the central data store. Ensures all parts of the app share the same data.
+**Singleton** — used for both AppContext (central data store) and DBConnection (single database connection throughout the app).
+
 
 ## OOP concepts covered
 
@@ -48,18 +50,23 @@ src/com/oms/
 ├── factory/        ProductFactory, UserFactory
 ├── app/            AppContext (Singleton)
 ├── ui/             ConsoleMenu, CustomerMenu, AdminMenu
+├── db/             DBConnection, UserDAO, ProductDAO, OrderDAO
 └── Main.java
 ```
 
 ## How to run
 
 1. Clone the repo
-2. Open in IntelliJ IDEA
-3. Run `Main.java`
-4. Login with `admin@oms.com` as admin, or register a new customer account
+2. Install MySQL and create database using schema.sql
+3. Set environment variable: MYSQL_PASSWORD=your_password
+4. Open in IntelliJ IDEA
+5. Add MySQL JDBC connector jar to project libraries
+6. Run Main.java
+7. Login with admin@oms.com as admin, or register a new customer account
 
 ## Tech used
 
 - Java 21
+- MySQL 8.0 — persistent data storage
+- JDBC — Java Database Connectivity
 - IntelliJ IDEA
-- No external libraries — pure Java
