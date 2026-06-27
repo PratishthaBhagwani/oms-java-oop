@@ -76,6 +76,10 @@ public class AppContext {
 
 
     public boolean addUser(User u) {
+        // Email format check
+        if (!u.getEmail().contains("@") || !u.getEmail().contains(".")) {
+            throw new com.oms.exceptions.InvalidEmailException(u.getEmail());
+        }
         // Duplicate email check
         if (userDAO.findByEmail(u.getEmail()) != null) {
             System.out.println("Email already registered!");

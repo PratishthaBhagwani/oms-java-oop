@@ -28,22 +28,25 @@ public class ConsoleMenu {
             }
         }
     }
-    private void showMainMenu(){
+    private void showMainMenu() {
         System.out.println("\n1. Login");
         System.out.println("2. Register");
         System.out.println("3. Exit");
         System.out.print("Choice: ");
 
-        String choice=scanner.nextLine();
-
-        switch(choice){
-            case "1" -> doLogin();
-            case "2" -> doRegister();
-            case "3" -> {
-                System.out.println("Goodbye !");
-                System.exit(0);
+        String choice = scanner.nextLine();
+        try {
+            switch (choice) {
+                case "1" -> doLogin();
+                case "2" -> doRegister();
+                case "3" -> {
+                    System.out.println("Goodbye !");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid Choice !");
             }
-            default -> System.out.println("Invalid Choice !");
+        } catch (com.oms.exceptions.InvalidEmailException e) {
+            System.out.println("❌ Error: " + e.getMessage());
         }
     }
     private void doLogin()
@@ -85,18 +88,25 @@ public class ConsoleMenu {
 
         String choice = scanner.nextLine();
 
+        try {
 
-        switch(choice){
-            case "1" -> customerMenu.browseProducts();
-            case "2" -> customerMenu.viewCart(c);
-            case "3" -> customerMenu.addToCart(c);
-            case "4" -> customerMenu.placeOrder(c);
-            case "5" -> customerMenu.myOrders(c);
-            case "6" -> {
-                context.logout();
-                System.out.println("Logged out! ");
+            switch (choice) {
+                case "1" -> customerMenu.browseProducts();
+                case "2" -> customerMenu.viewCart(c);
+                case "3" -> customerMenu.addToCart(c);
+                case "4" -> customerMenu.placeOrder(c);
+                case "5" -> customerMenu.myOrders(c);
+                case "6" -> {
+                    context.logout();
+                    System.out.println("Logged out! ");
+                }
+                default -> System.out.println("Invalid choice!");
             }
-            default -> System.out.println("Invalid choice!");
+        }catch(com.oms.exceptions.OutOfStockException |
+               com.oms.exceptions.InvalidEmailException |
+               com.oms.exceptions.OrderNotFoundException |
+               com.oms.exceptions.PaymentFailedException e) {
+            System.out.println("❌ Error: " + e.getMessage());
         }
     }
     private void showAdminMenu(){
@@ -110,17 +120,24 @@ public class ConsoleMenu {
 
         String choice = scanner.nextLine();
 
+        try{
+            switch(choice){
+                case "1" -> adminMenu.viewProducts();
+                case "2" -> adminMenu.addProduct();
+                case "3" -> adminMenu.viewOrders();
+                case "4" -> adminMenu.updateOrderStatus();
+                case "5" -> {
+                    context.logout();
+                    System.out.println("Logged out!");
+                }
+                default -> System.out.println("Invalid choice!");
+        }
 
-        switch(choice){
-            case "1" -> adminMenu.viewProducts();
-            case "2" -> adminMenu.addProduct();
-            case "3" -> adminMenu.viewOrders();
-            case "4" -> adminMenu.updateOrderStatus();
-            case "5" -> {
-                context.logout();
-                System.out.println("Logged out!");
-            }
-            default -> System.out.println("Invalid choice!");
+        }catch (com.oms.exceptions.OutOfStockException |
+                com.oms.exceptions.InvalidEmailException |
+                com.oms.exceptions.OrderNotFoundException |
+                com.oms.exceptions.PaymentFailedException e){
+            System.out.println("❌ Error: " + e.getMessage());
         }
     }
 }

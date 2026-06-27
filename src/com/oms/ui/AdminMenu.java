@@ -88,8 +88,7 @@ public class AdminMenu {
         }
     }
     if(found==null){
-        System.out.println("Order not found!");
-        return;
+        throw new com.oms.exceptions.OrderNotFoundException(orderId);
     }
         System.out.println("Current status: " + found.getStatus());
         System.out.println("1. CONFIRMED");

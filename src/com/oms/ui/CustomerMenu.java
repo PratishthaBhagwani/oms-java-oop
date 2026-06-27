@@ -51,6 +51,10 @@ public class CustomerMenu {
 
         Product selected= products.get(choice-1);
 
+        if (selected.getStockQuantity() < qty) {
+            throw new com.oms.exceptions.OutOfStockException(selected.getName());
+        }
+
         if(cart==null){
             cart=new ShoppingCart(c.getUserId());
         }
