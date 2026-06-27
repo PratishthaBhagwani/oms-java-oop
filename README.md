@@ -70,3 +70,8 @@ src/com/oms/
 - MySQL 8.0 — persistent data storage
 - JDBC — Java Database Connectivity
 - IntelliJ IDEA
+
+## Known limitations / Future scope
+- Passwords stored as plain text — in production, BCrypt hashing would be used
+- No input validation on price/stock fields
+- Console-based UI — can be extended to REST API with Spring Boot
