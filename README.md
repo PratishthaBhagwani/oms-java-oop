@@ -51,7 +51,12 @@ src/com/oms/
 ├── app/            AppContext (Singleton)
 ├── ui/             ConsoleMenu, CustomerMenu, AdminMenu
 ├── db/             DBConnection, UserDAO, ProductDAO, OrderDAO
+├── exceptions/     OutOfStockException, InvalidEmailException, PaymentFailedException, OrderNotFoundException
 └── Main.java
+
+test/com/oms/test/
+├── ShoppingCartTest
+└── ExceptionTest
 ```
 
 ## How to run
@@ -65,10 +70,10 @@ src/com/oms/
 7. Login with admin@oms.com as admin, or register a new customer account
 
 ## Tech used
-
 - Java 21
 - MySQL 8.0 — persistent data storage
 - JDBC — Java Database Connectivity
+- JUnit Jupiter 5.10.0 — unit testing
 - IntelliJ IDEA
 
  ## Error Handling
