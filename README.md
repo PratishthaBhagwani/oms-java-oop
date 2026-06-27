@@ -71,6 +71,12 @@ src/com/oms/
 - JDBC — Java Database Connectivity
 - IntelliJ IDEA
 
+ ## Error Handling
+- OutOfStockException — thrown when requested quantity exceeds available stock
+- InvalidEmailException — thrown when email format is invalid during registration  
+- OrderNotFoundException — thrown when an order ID does not exist
+- PaymentFailedException — thrown when wallet balance is insufficient
+
 ## Known limitations / Future scope
 - Passwords stored as plain text — in production, BCrypt hashing would be used
 - No input validation on price/stock fields
