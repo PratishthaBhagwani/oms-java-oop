@@ -77,6 +77,10 @@ src/com/oms/
 - OrderNotFoundException — thrown when an order ID does not exist
 - PaymentFailedException — thrown when wallet balance is insufficient
 
+## Testing  
+- 9 JUnit 5 unit tests covering ShoppingCart, tax calculation, and custom exceptions
+- Framework: JUnit Jupiter 5.10.0
+
 ## Known limitations / Future scope
 - Passwords stored as plain text — in production, BCrypt hashing would be used
 - No input validation on price/stock fields
