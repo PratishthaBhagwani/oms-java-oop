@@ -23,7 +23,7 @@ public class UserDAO {
             ps.setString(1, user.getUserId());
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
-            ps.setString(4, getPasswordHash(user));
+            ps.setString(4, user.getPasswordHash());
             ps.setString(5, user.getRole());
             ps.setDouble(6, user instanceof Customer c ? c.getWalletBalance() : 0.0);
             ps.setString(7, user instanceof Seller s ? s.getStoreName() : null);

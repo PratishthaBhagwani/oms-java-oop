@@ -1,98 +1,93 @@
 package com.oms.app;
 
-import com.oms.factory.ProductFactory;
+import com.oms.db.OrderDAO;
+import com.oms.db.ProductDAO;
+import com.oms.db.UserDAO;
 import com.oms.factory.UserFactory;
 import com.oms.model.order.Order;
 import com.oms.model.product.Product;
-import com.oms.model.user.User;
+import com.oms.model.user.Admin;
 import com.oms.model.user.Customer;
+import com.oms.model.user.User;
 
 import java.util.ArrayList;
 
 public class AppContext {
-    //Singleton
+
     private static AppContext instance;
 
-    private ArrayList<User> users=new ArrayList<>();
-    private ArrayList<Product>products=new ArrayList<>();
-    private ArrayList<Order>orders=new ArrayList<>();
-    private User loggedInUser=null;
+    private UserDAO    userDAO    = new UserDAO();
+    private ProductDAO productDAO = new ProductDAO();
+    private OrderDAO   orderDAO   = new OrderDAO();
 
-    private AppContext(){
-        loadSampleData();
+    private User loggedInUser = null;
+
+    private AppContext() {
+        seedDataIfEmpty();
     }
-    public static AppContext getInstance(){
-        if(instance==null){
-            instance=new AppContext();
+
+    public static AppContext getInstance() {
+        if (instance == null) {
+            instance = new AppContext();
         }
         return instance;
     }
-    private void loadSampleData()
-    {
-        //Users
-        users.add(UserFactory.createAdmin("Admin","admin@oms.com"));
-        Customer c=UserFactory.createCustomer("Arjun Sharma","arjun@gmail.com");
-        c.topUpWallet(10000);
-        users.add(c);
 
-        //Products
-        products.add(ProductFactory.createElectronics(
-                "Samsung Galaxy A55", 32999, 15, 12));
-        products.add(ProductFactory.createElectronics(
-                "Dell Laptop", 54999, 8, 24));
-        products.add(ProductFactory.createClothing(
-                "Cotton Kurta", 799, 50, "M"));
-        products.add(ProductFactory.createClothing(
-                "Levi's Jeans", 2499, 30, "32"));
-        products.add(ProductFactory.createGrocery(
-                "Basmati Rice 5kg", 450, 100));
-        products.add(ProductFactory.createGrocery(
-                "Toor Dal 1kg", 120, 200));
+
+    private void seedDataIfEmpty() {
+        if (userDAO.isEmpty()) {
+            Admin admin = new Admin("ADMN-00001", "Admin", "admin@oms.com");
+            userDAO.save(admin);
+
+            Customer c = new Customer("CUST-00001", "Arjun Sharma", "arjun@gmail.com");
+            c.topUpWallet(10000);
+            userDAO.save(c);
+
+            productDAO.save(com.oms.factory.ProductFactory
+                    .createElectronics("Samsung Galaxy A55", 32999, 15, 12));
+            productDAO.save(com.oms.factory.ProductFactory
+                    .createClothing("Cotton Kurta", 799, 50, "M"));
+            productDAO.save(com.oms.factory.ProductFactory
+                    .createGrocery("Basmati Rice 5kg", 450, 100));
+
+            System.out.println("✅ Sample data seeded to MySQL!");
+        }
     }
 
-    public ArrayList<User> getUsers() { return users; }
+    public ArrayList<User>    getUsers()    { return userDAO.findAll(); }
+    public ArrayList<Product> getProducts() { return productDAO.findAll(); }
+    public ArrayList<Order>   getOrders()   { return orderDAO.findAll(); }
 
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
+    public User getLoggedInUser() { return loggedInUser; }
 
-    public ArrayList<Order> getOrders() {
-        return orders;
-    }
 
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    //Login/Logout
-    public boolean login(String email){
-        for(User u:users){
-            if(u.getEmail().equalsIgnoreCase(email)){
-                loggedInUser=u;
-                return true;
-            }
+    public boolean login(String email) {
+        User u = userDAO.findByEmail(email);
+        if (u != null) {
+            loggedInUser = u;
+            return true;
         }
         return false;
     }
-    public void logout(){  loggedInUser=null;  }
-    public boolean isLoggedIn()
-    {
-        return loggedInUser!=null;
-    }
-    public boolean addUser(User u){
-        for(User existing : users){
-            if(existing.getEmail().equalsIgnoreCase(u.getEmail())){
-                System.out.println("Email already registered!");
-                return false;
-            }
+
+    public void logout() { loggedInUser = null; }
+
+    public boolean isLoggedIn() { return loggedInUser != null; }
+
+
+    public boolean addUser(User u) {
+        // Duplicate email check
+        if (userDAO.findByEmail(u.getEmail()) != null) {
+            System.out.println("Email already registered!");
+            return false;
         }
-            users.add(u);
+        userDAO.save(u);
         return true;
-        }
-    public void addProduct(Product p){  products.add(p);  }
-    public void addOrder(Order o){   orders.add(o);   }
+    }
+    public void addProduct(Product p) { productDAO.save(p); }
+    public void addOrder(Order o)     { orderDAO.save(o); }
 
+    public UserDAO    getUserDAO()    { return userDAO; }
+    public ProductDAO getProductDAO() { return productDAO; }
+    public OrderDAO   getOrderDAO()   { return orderDAO; }
 }
-
-
-

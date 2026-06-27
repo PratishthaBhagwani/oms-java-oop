@@ -105,6 +105,8 @@ public class AdminMenu {
             case "4" -> found.updateStatus(OrderStatus.CANCELLED);
             default  -> System.out.println("Invalid!");
         }
+        context.getOrderDAO().save(found);
+        System.out.println("✅ Status updated to: " + found.getStatus());
     }
 }
 
